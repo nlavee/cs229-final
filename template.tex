@@ -66,11 +66,11 @@ Each question is worth 1 point. Provide a short justification (one or two lines)
 
 \item \textbf{True or False}. Removing half the training data will increase variance.
 
-\answer{}{Your Answer Here}
+\answer{}{True, this should mean that the model will have less to work with for prediction. The test prediction will likely be larger than before, indicating incrase variance.}
 
 \item \textbf{True or False}. Removing half of the features of $x$ will increase bias.
 
-\answer{}{}
+\answer{}{True, this would increase bias since it forces the model to assume more with less information available.}
 
 \item \textbf{True or False}. Removing half of the features of $x$ will increase variance.
 
@@ -136,7 +136,7 @@ What 3 components can Mean Squared Error be decomposed into? Which component can
 \item \textbf{Short Answer}. 
 How many parameters are necessary to specify a \emph{Bernoulli Event Model} Naive Bayes classifier with $c$ classes and vocabulary size $v$? Express your answer in terms of $c$ and $v$.
 
-\answer{}{}
+\answer{}{We would need $v\times c$ parameters in total.}
 
 \item \textbf{Short Answer}.
 Suppose we train a neural network to classify 16 x 16 pixel images into 4 classes. We flatten each image into a vector, and feed the images into a 3-layer neural net with 10 neurons in the first hidden layer, 6 neurons in the second hidden layer, and apply softmax loss at the output layer. How many parameters does this model have? (Don't forget to include biases!)
@@ -155,7 +155,11 @@ How many distinct deterministic policies $\pi:S\to A$ can be defined for this MD
         \item exponential loss: $\varphi(z) = e^{-z}$
         \item hinge loss: $\varphi(z) = \max\{1-z, 0\}$
     \end{enumerate}
-\answer{}{}
+\answer{}{
+(a) would not work here as the loss function is a straight line and does not have anything for gradient descent to work with. I found a good graphical plot for all these loss functions:
+
+\includegraphics{loss_functions_q2_5.png}
+}
 
 \end{enumerate}
 
