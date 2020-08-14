@@ -13,22 +13,23 @@ def batch_dot(Z1, Z2):
       A numpy array of shape (batch_size, ) containing the dot products
     """
     # *** START CODE HERE ***
-    print("Entering Batch Dot")
-    print(f"Z1: {Z1.shape}")
-    print(f"Z2: {Z2.shape}")
+    # print("Entering Batch Dot")
+    # print(f"Z1: {Z1.shape}")
+    # print(f"Z2: {Z2.shape}")
 
     n, d = Z1.shape
 
     res = []
 
     for i in range(n):
-        print(f"Z1[{i}]: {Z1[i]}")
-        print(f"Z2[{i}]: {Z2[i]}")
-        print(f"Dot product: {np.dot(Z1[i], Z2[i])}")
+        # print(f"Z1[{i}]: {Z1[i]}")
+        # print(f"Z2[{i}]: {Z2[i]}")
+        # print(f"Dot product: {np.dot(Z1[i], Z2[i])}")
         res.append(np.dot(Z1[i], Z2[i]))
 
-    res = np.array(res).reshape(n,)
-    print(f'Batch_Dot: {res} \n({res.shape})')
+    res = np.array(res).reshape(n, )
+    # print(f'Batch_Dot: {res} \n({res.shape})')
+    # exit(1)
     return res
     # *** END CODE HERE ***
 
@@ -46,6 +47,14 @@ def distance_loss(y_true, d):
       The average loss for the given batch (a scalar)
     """
     # *** START CODE HERE ***
+    left = (1 - y_true) * (d ** 2)
+    right = y_true * (1 - d) ** 2
+    # print(f"left: \n {one_min_y} * \n {d} \n= {left}")
+    # print(f"right: \n {one_min_d} * \n {y_true} \n= {right}")
+    res = np.mean(left + right)
+    # print(f"res: {res}")
+    return res
+
     # *** END CODE HERE ***
 
 
@@ -62,6 +71,21 @@ def accuracy(y_true, d):
       The average accuracy for the given batch (a scalar)
     """
     # *** START CODE HERE ***
+    n = len(d)
+    # y_hat = []
+    # for i in range(n):
+    #     y_hat.append(1 if d[i] > 0.5 else 0)
+    # y_hat = np.array(y_hat)
+
+    sum_1 = 0
+    for i in range(n):
+        sum_1 += 1 if ((d[i] > 0.5 and y_true[i] == 1) or (d[i] < 0.5 and y_true[i] == 0)) else 0
+
+        # print(f"{d[i]} > 0.5 = {d[i] > 0.5} and {y_true[i]}: {y_true[i] == 1} ==> sum = {sum_1} || {sum_2}")
+    # exit(1)
+
+    return sum_1 / n
+
     # *** END CODE HERE ***
 
 
