@@ -74,26 +74,26 @@ Each question is worth 1 point. Provide a short justification (one or two lines)
 
 \item \textbf{True or False}. Removing half of the features of $x$ will increase variance.
 
-\answer{}{}
+\answer{}{False, removing features leads to increase in bias, which could lead to decrease in variance. }
 
 \item \textbf{True or False}. Adding a constant to the arguments of Radial Basis Function (RBF) kernel will not change the value of the kernel.
 
-\answer{}{}
+\answer{}{True, since RBF kernels rely on calculating squared distance. This squared distance would be unchanged as $((x+c) - (x'+c))^2 = ((x - x')^2 = $.}
 
 \item \textbf{True or False}. The following probability density function parameterized by $\theta$ belongs to the exponential family.
 \begin{align}
 f(x;\theta) = \frac{\theta^x}{2\pi x^3}e^{-\theta}
 \end{align}
 
-\answer{}{}
+\answer{}{False, $\theta^x$ is problematic here.}
 
 \item \textbf{True or False}. When training a neural network, it is a good practice to initialize all weights to $0$.
 
-\answer{}{}
+\answer{}{False, we need random initialization. The reason is discussed in "Parameters Initialization" in Deep Learning Notes, but essentially to avoid the same output for first layer.}
 
 \item \textbf{True or False}. There is a unique solution to $k$-means clustering regardless of how we initialize the $k$ centers. 
 
-\answer{}{}
+\answer{}{False, depending on how we initialize the $k$ centers, it'll impact the distance calculation to determine which group an examples belong to. This can in turn result in a different $k$-means solution as we run the algorithm each time through the same dataset.}
 
 \end{enumerate}
 
@@ -108,15 +108,15 @@ f(x;\theta) = \frac{\theta^x}{2\pi x^3}e^{-\theta}
 
 \item \textbf{True or False}. Adding a regularization term to the loss function can change the decision boundary.
 
-\answer{}{}
+\answer{}{True, just like in class discussion on regularization and the non-separable case, this technique is used to make decision boundary less sensitive to outliers.}
 
 \item \textbf{True or False}. Scaling each $x_i$ by constant $c$ can change the decision boundary.
 
-\answer{}{}
+\answer{}{False, }
 
 \item \textbf{True or False}. Removing all data points that are not support vectors (i.e., their distance from the decision boundary is greater than $1$) can change the decision boundary.
 
-\answer{}{}
+\answer{}{If done before introducing a new training, then True, because SVM would try to recreate the decision boundary using only the leftover points. However, if we mean that after we train, we only save the support vectors, and try to make prediction on a new point, then False, decision boundary remains the same.}
 
 \end{enumerate}
 
@@ -197,7 +197,28 @@ Let $S_i = [s_1, s_2, \cdots, s_{N_i}]$ be a string sequence (i.e. an email). Vo
     
     \emph{Hint}: The description of $\phi(S_i)$ should be brief.
     
-    \answer{}{}
+    \answer{}{
+ $$
+    K_{V,n}(S_1, S_2) = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} \delta(x, z) = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} 1\{x=z\} = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} 1\{x=z\} \; 1\{z=x\}
+ $$
+
+The last equality is due the fact that if x=z then z=x as well. The operation here looks like we need to go through and count co-occurence between the two set of n-grams for $S_1, S_2$. 
+
+%
+%$$
+%    K_{V,n}(S_1, S_2) = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} 1\{x=z\} \; 1\{z=x\} 
+%$$
+%$$
+%= \sum_{i=1}^{l_1} \sum_{j=1}^{l_2} (1\{x=z\}) \; (1\{z=x\})
+%$$
+%Where $l_1 = len(g_n(S_1))$ and $l_2 = len(g_n(S_2))$.
+%
+%The feature map here is the p-spectrum kernels, where we can think each word as a character, and the entire string sequence as a string. This mapping makes sense since we don't particularly care about the length of each string within the string sequence. Instead, we care about matching subsequence of string of length n with another subsequence of string of length n. \\
+
+The feature map is then $\phi(S_i) =  |{(n_1, n_2): s = n_1 \cup n_2}|$ \\
+
+The feature map defined by this kernel associates each $S_i$ a vector of dimension $|V|^n$ containing the historgram of frequencies of all its substrings of length n (n-grams).
+}
     
     \item[(b)] [3 points] In reality, the vocabulary size is usually large. For example {\it WikiText-103}, which contains all articles extracted from Wikipedia, has a vocabulary size of 217,646. However, the frequency of words has a long tail distribution and some of the words rarely appear. We can replace those rare words with a designated ``unknown token'' UNK to effectively reduce the vocabulary size. For example, if we restrict the vocabulary to $V'$ which only the has three tokens $\{ \text{I}, \text{saw}, \text{UNK}\}$, our previous example becomes: $S'_i = [\text{I, saw, UNK, saw, UNK, saw, UNK, saw}]$, and
     $$
@@ -210,7 +231,11 @@ Let $S_i = [s_1, s_2, \cdots, s_{N_i}]$ be a string sequence (i.e. an email). Vo
     $$
     Is this still a valid kernel? If yes, express the kernel function using an appropriate feature mapping $\phi'(S_i)$ and state its relation with $\phi(S_i)$. If not, please give a counterexample.
     
-    \answer{}{}
+    \answer{}{
+This should still be a valid kernel mapping as nothing has fundamentally changed. All the rare words are mapped to the "unknown token" UNK for all string. In a way, the feature map here seems to combine 2 feature mapping, first map to UNK tokens, and then second part is the same as the part above.\\
+
+The feature map is updated to be:  $\phi'(S_i) =  |{(n_1, n_2): s = n_1 \cup n_2}|$ \\
+    }
     
     \clearpage  
     
