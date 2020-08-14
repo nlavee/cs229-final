@@ -13,6 +13,23 @@ def batch_dot(Z1, Z2):
     A numpy array of shape (batch_size, ) containing the dot products
   """
   # *** START CODE HERE ***
+  print("Entering Batch Dot")
+  print(f"Z1: {Z1.shape}")
+  print(f"Z2: {Z2.shape}")
+
+  n, d = Z1.shape
+
+  res = np.array(n)
+
+  for i in range(n):
+    print(f"Z1[{i}]: {Z1[i]}")
+    print(f"Z2[{i}]: {Z2[i]}")
+    print(f"Dot product: {np.dot(Z1[i], Z2[i])}")
+    res[i] = np.dot(Z1[i], Z2[i])
+
+  print(f'Batch_Dot: {res} \n({res.shape})')
+
+
   # *** END CODE HERE ***
 
 
