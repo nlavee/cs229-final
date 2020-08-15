@@ -422,42 +422,108 @@ $$
 \frac{\partial}{\partial h^{[2]}(x_1)} \ell(x_1, x_2, y; W, b)= \frac{1}{1 + \exp(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))} \;  \left(  0 + \exp(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2)) (-y h^{[2]}(x_2))   \right)
 $$
 $$
-= \frac{ (-y h^{[2]}(x_2)) e^{(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))}}{1 + e^{(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))}}
+= \frac{ -y h^{[2]}(x_2) e^{(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))}}{1 + e^{ -y{h^{[2]}(x_1)}^\top h^{[2]}(x_2)}}
 $$
 
 $$
 \frac{\partial}{\partial h^{[2]}(x_2)} \ell(x_1, x_2, y; W, b)= \frac{1}{1 + \exp(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))} \;  \left(  0 + \exp(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2)) (-y {h^{[2]}(x_1))}^\top   \right)
 $$
 $$
-= \frac{ (-y {h^{[2]}(x_1)}^\top) e^{(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))}}{1 + e^{(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))}} 
+= \frac{ -y {h^{[2]}(x_1)}^\top e^{(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))}}{1 + e^{-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2)}} 
 $$           
     }
     
     \item [(b)] [1.5 points] Express $\frac{\partial \ell}{\partial W^{[2]}}$, $\frac{\partial \ell}{\partial b^{[2]}}$ in terms of $\frac{\partial \ell}{\partial h^{[2]}(x_1)}$ and $\frac{\partial \ell}{\partial h^{[2]}(x_2)}$ and $a^{[1]}(x_1), a^{[1]}(x_2)$.
     
     \answer{}{
+%$$
+%    \ell(x_1, x_2, y; W, b) = \log\left(1 + e^{-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2)}\right) 
+%$$
+%$$
+%= \log\left(1 + e^{-y{(W^{[2]}a^{[1]}(x_1) + b^{[2]})}^\top  (W^{[2]}a^{[1]}(x_2) + b^{[2]})}\right)
+%$$
+%$$
+%= \log\left(1 + e^{-y({(a^{[1]}(x_1))}^\top {(W^{[2]})}^\top + {b^{[2]}}^\top)  (W^{[2]}a^{[1]}(x_2) + b^{[2]})}\right)
+%$$
+%$$
+%= \log\left(1 + e^{-y  ( 
+%{(a^{[1]}(x_1))}^\top {(W^{[2]})}^\top   W^{[2]} a^{[1]}(x_2) 
+%+ {b^{[2]}}^\top)  (W^{[2]} a^{[1]}(x_2) 
+%+ {(a^{[1]} (x_1))}^\top {(W^{[2]})}^\top  b^{[2]} 
+%+ {b^{[2]}}^\top ) b^{[2]})    
+%} \right)
+%$$
+
 $$
-    \ell(x_1, x_2, y; W, b) = \log\left(1 + \exp(-y{h^{[2]}(x_1)}^\top h^{[2]}(x_2))\right) 
+\frac{\partial \ell}{\partial W^{[2]}} = 
+\begin{bmatrix} \;
+\frac{\partial \ell}{\partial W_{1}^{[2]}} \\
+\frac{\partial \ell}{\partial W_{2}^{[2]}} \\
+\end{bmatrix} \;
+= 
+\begin{bmatrix} \;
+\frac{\partial \ell}{\partial h^{[2]}(x_1)} \frac{\partial h^{[2]}(x_1)}{\partial W_{1}^{[2]}} \\
+\frac{\partial \ell}{\partial h^{[2]}(x_2)} \frac{\partial h^{[2]}(x_2)}{\partial W_{2}^{[2]}} \\
+\end{bmatrix} \;
+= 
+\begin{bmatrix} \;
+\frac{\partial \ell}{\partial h^{[2]}(x_1)} \frac{\partial}{\partial W^{[2]}} W_{1}^{[2]}a^{[1]}(x_1) + b^{[2]} \\
+\frac{\partial \ell}{\partial h^{[2]}(x_2)} \frac{\partial}{\partial W^{[2]}} W_{2}^{[2]}a^{[1]}(x_2) + b^{[2]} \\
+\end{bmatrix} \;
+= 
+\begin{bmatrix} \;
+\frac{\partial \ell}{\partial h^{[2]}(x_1)} a^{[1]}(x_1) \\
+\frac{\partial \ell}{\partial h^{[2]}(x_2)} a^{[1]}(x_2) \\
+\end{bmatrix} \;
 $$
+\\
 $$
-= \log\left(1 + \exp(-y{(W^{[2]}a^{[1]}(x_1) + b^{[2]})}^\top  (W^{[2]}a^{[1]}(x_2) + b^{[2]}))\right)
+\frac{\partial \ell}{\partial b^{[2]}}
+=
+\begin{bmatrix} \;
+\frac{\partial \ell}{\partial h^{[2]}(x_1)} \frac{\partial h^{[2]}(x_1)}{\partial b_1^{[2]}} \\
+\frac{\partial \ell}{\partial h^{[2]}(x_2)} \frac{\partial h^{[2]}(x_2)}{\partial b_2^{[2]}}  \\
+\end{bmatrix} \;
+=
+\begin{bmatrix} \;
+\frac{\partial \ell}{\partial h^{[2]}(x_1)} \frac{\partial}{\partial b_1^{[2]}} W^{[2]}a^{[1]}(x_1) + b_1^{[2]} \\
+\frac{\partial \ell}{\partial h^{[2]}(x_2)} \frac{\partial}{\partial b_2^{[2]}} W^{[2]}a^{[1]}(x_2) + b_2^{[2]} \\
+\end{bmatrix} \;
+=
+\begin{bmatrix} \;
+\frac{\partial \ell}{\partial h^{[2]}(x_1)} (1) \\
+\frac{\partial \ell}{\partial h^{[2]}(x_2)} (1) \\
+\end{bmatrix} \;
+=
+\begin{bmatrix} \;
+\frac{\partial \ell}{\partial h^{[2]}(x_1)} \\
+\frac{\partial \ell}{\partial h^{[2]}(x_2)} \\
+\end{bmatrix} \;
 $$
-$$
-= \log\left(1 + e^{{(-yW^{[2]}a^{[1]}(x_1)}^\top - {yb^{[2]}}^\top )  (W^{[2]}a^{[1]}(x_2) + b^{[2]})}\right)
-$$
-$$
-= \log\left(1 + e^{{(-yW^{[2]}a^{[1]}(x_1)}^\top - {yb^{[2]}}^\top )  (W^{[2]}a^{[1]}(x_2) + b^{[2]})}\right)
-$$   
-    
+
     }
     
     \item [(c)] [1.5 points] Express $\frac{\partial \ell}{\partial h^{[1]}(x_1)}$, $\frac{\partial \ell}{\partial h^{[1]}(x_2)}$ in terms of model parameters and $\frac{\partial \ell}{\partial h^{[2]}(x_1)}, \frac{\partial \ell}{\partial h^{[2]}(x_2)}$.
     
-    \answer{}{}
+    \answer{}{
+$$
+\frac{\partial \ell}{\partial h^{[1]}(x_1)} = \frac{\partial \ell}{\partial h^{[2]}(x_1)} \frac{\partial h^{[2]}(x_1)}{\partial W_1^{[2]}} \frac{\partial W_1^{[2]}}{\partial a^{[1]}(x)} \frac{\partial h^{[2]}(x_1)}{\partial a^{[1]}(x)} \frac{\partial a^{[1]}(x)}{\partial h^{[1]}(x_1)} = 
+$$
+    
+    
+$$
+\frac{\partial \ell}{\partial h^{[1]}(x_2)}
+$$
+
+    }
     
     \item [(d)] [1.5 points] Express $\frac{\partial \ell}{\partial W^{[1]}}$, $\frac{\partial \ell}{\partial b^{[1]}}$ in terms of $\frac{\partial \ell}{\partial h^{[1]}(x_1)}$, $\frac{\partial \ell}{\partial h^{[1]}(x_2)}$ and $x_1, x_2$.
     
-    \answer{}{}
+    \answer{}{
+    
+    
+    
+    }
     
 \end{itemize}
 
