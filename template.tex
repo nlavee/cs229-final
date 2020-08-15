@@ -131,7 +131,13 @@ Each question is worth 2 points. Provide a short justification (one or two lines
 \item \textbf{Short Answer}. 
 What 3 components can Mean Squared Error be decomposed into? Which component can be reduced by using a larger training set? Which component can be reduced by adding another hidden layer in a neural net? Which component can be reduced by decreasing the dimension of parameter $\theta$?
 
-\answer{}{}
+\answer{}{
+MSE =  Irreducible Error+ Bias$^2$ + Variance\\
+
+Which component can be reduced by using a larger training set? Variance. This leads to the model potentially reduce the gap between cross-validation error and training error through learning from more examples.  \\
+Which component can be reduced by adding another hidden layer in a neural net?  Bias. The model is now bigger and more complicated, leading it to learn more pontentially from its current set of features. Training error might be lower, indicating lower bias.\\
+Which component can be reduced by decreasing the dimension of parameter $\theta$? This action would means that the parameter would have less expressive power. Depending on the data, this might cause it to perform worse on training error. An example if we're reducing parameters to 1 dimension, but we're predicting data that's much better expressed in 3 dimensions. Therefore, this seems to increase bias which might result in increase in variance. \\
+}
 
 \item \textbf{Short Answer}. 
 How many parameters are necessary to specify a \emph{Bernoulli Event Model} Naive Bayes classifier with $c$ classes and vocabulary size $v$? Express your answer in terms of $c$ and $v$.
@@ -141,7 +147,12 @@ How many parameters are necessary to specify a \emph{Bernoulli Event Model} Naiv
 \item \textbf{Short Answer}.
 Suppose we train a neural network to classify 16 x 16 pixel images into 4 classes. We flatten each image into a vector, and feed the images into a 3-layer neural net with 10 neurons in the first hidden layer, 6 neurons in the second hidden layer, and apply softmax loss at the output layer. How many parameters does this model have? (Don't forget to include biases!)
 
-\answer{}{}
+\answer{}{
+For the first layer, the number of params = $(10 \times (16 \times 16)) + 10 = (10 \times 256) + 10$.\\
+For the second layer, the number of params = $(6 \times 10) + 6$.\\
+For the third layer, the number of params = $(4 \times 6) + 4$.\\
+The model has 2664 parameters in total.\\\
+}
 
 \item \textbf{Short Answer}.
 Consider a Markov Decision Process (MDP) defined as $(S, A, \{P_{sa}\}, \gamma, R)$, where $S$ is a finite set of $m$ states, $A$ is a finite set of $n$ actions, $\{P_{sa}\}$ are the transition probabilities, $\gamma$ is the discount factor, and $R$ is the reward function.
@@ -156,9 +167,13 @@ How many distinct deterministic policies $\pi:S\to A$ can be defined for this MD
         \item hinge loss: $\varphi(z) = \max\{1-z, 0\}$
     \end{enumerate}
 \answer{}{
-(a) would not work here as the loss function is a straight line and does not have anything for gradient descent to work with. I found a good graphical plot for all these loss functions:
+I found a good graphical plot for all these loss functions (source: https://rohanvarma.me/Loss-Functions): \\
+\includegraphics{loss_functions_q2_5.png} \\
 
-\includegraphics{loss_functions_q2_5.png}
+(a) would not work here as the loss function is a straight line and does not have anything for gradient descent to work with. \\
+(b) should work. \\
+(c) should work. \\
+
 }
 
 \end{enumerate}
@@ -350,8 +365,8 @@ Run \texttt{train.py} and submit the 2 learning curve plots (loss vs epochs, acc
 
 \answer{}{
 
-\includegraphics[scale=0.5]{./code/learning-curves.pdf}
-\includegraphics[scale=0.5]{./code/embeddings.pdf}
+\includegraphics[scale=0.6]{./code/learning-curves.pdf} \\
+\includegraphics[scale=0.5]{./code/embeddings.pdf} \\
 
 Phonetic Analogies:\\
 "cap" is to "coo" as "zap" is to "zoo"\\
