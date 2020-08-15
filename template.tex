@@ -85,7 +85,34 @@ Each question is worth 1 point. Provide a short justification (one or two lines)
 f(x;\theta) = \frac{\theta^x}{2\pi x^3}e^{-\theta}
 \end{align}
 
-\answer{}{False, $\theta^x$ is problematic here.}
+\answer{}{True, we can derive the parameters:
+$$
+f(x;\theta) = \frac{\theta^x}{2\pi x^3}e^{-\theta} = \frac{1}{2\pi x^3} (\theta^x \; e^{-\theta})
+$$
+$$
+= \frac{1}{2\pi x^3} \exp(\log(\theta^x \; e^{-\theta}))
+$$
+$$
+= \frac{1}{2\pi x^3} \exp(\log(\theta^x) + \log(e^{-\theta}))
+$$
+$$
+= \frac{1}{2\pi x^3} \exp(x\log(\theta) -\theta)
+$$
+Rewrite this with y instead of x:
+$$
+f(y;\theta) = \frac{1}{2\pi y^3} \exp(y\log(\theta) -\theta)
+$$
+The parameters:
+$$
+b(y) = \frac{1}{2\pi y^3}; \; T(y)= y; \; 
+$$
+$$
+\eta^T=\log(\theta) \implies \eta = \log(\theta) \implies \theta = e^\eta
+$$
+$$
+\alpha(\eta)= \theta = e^\eta
+$$
+}
 
 \item \textbf{True or False}. When training a neural network, it is a good practice to initialize all weights to $0$.
 
@@ -219,8 +246,26 @@ Let $S_i = [s_1, s_2, \cdots, s_{N_i}]$ be a string sequence (i.e. an email). Vo
     K_{V,n}(S_1, S_2) = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} \delta(x, z) = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} 1\{x=z\} = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} 1\{x=z\} \; 1\{z=x\}
  $$
 
-The last equality is due the fact that if x=z then z=x as well. The operation here looks like we need to go through and count co-occurence between the two set of n-grams for $S_1, S_2$. 
+The last equality is due the fact that if x=z then z=x as well. The operation here looks like we need to go through and count co-occurence between the two set of n-grams for $S_1, S_2$. The co-occurence would mean that the n-gram would have to be present in both $g_n(S_i)$ and $g_n(S_j)$. Since we know the vocabulary $V$, we could construct a high dimensional space for the feature space that combines the lenght of $V$ and also the length of n-grams. 
 
+More concretely, given vocab $V$ with $v$ elements in total, we construct a feature map where each row represents whether the n-grams exists in $S_j$. For example, given a simplified vocab of \{"A", "B", "C", "D", "E"\} and $n=2$ for n-grams, we could construct a vector like follow for $S_1$:
+$$
+\begin{bmatrix} 
+1 \{ \{\text{"A, A"}\} \in S_1\} \\ 
+1 \{ \{\text{"A, B"}\} \in S_1\} \\ 
+1 \{ \{\text{"A, C"}\} \in S_1\} \\ 
+1 \{ \{\text{"A, D"}\} \in S_1\} \\ 
+1 \{ \{\text{"A, E"}\} \in S_1\} \\ 
+1 \{ \{\text{"B, A"}\} \in S_1\} \\ 
+1 \{ \{\text{"B, B"}\} \in S_1\} \\ 
+1 \{ \{\text{"B, C"}\} \in S_1\} \\ 
+1 \{ \{\text{"B, D"}\} \in S_1\} \\ 
+1 \{ \{\text{"B, E"}\} \in S_1\} \\ 
+\dots
+\end{bmatrix}
+$$
+
+The feature mapping d will has dimension of $(V^n, 1)$ where V is the number of words in dictionary and n is from n-grams. 
 %
 %$$
 %    K_{V,n}(S_1, S_2) = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} 1\{x=z\} \; 1\{z=x\} 
@@ -232,9 +277,9 @@ The last equality is due the fact that if x=z then z=x as well. The operation he
 %
 %The feature map here is the p-spectrum kernels, where we can think each word as a character, and the entire string sequence as a string. This mapping makes sense since we don't particularly care about the length of each string within the string sequence. Instead, we care about matching subsequence of string of length n with another subsequence of string of length n. \\
 
-The feature map is then $\phi(S_i) =  |{(n_1, n_2): s = n_1 \cup n_2}|$ \\
-
-The feature map defined by this kernel associates each $S_i$ a vector of dimension $|V|^n$ containing the historgram of frequencies of all its substrings of length n (n-grams).
+%The feature map is then $\phi(S_i) =  |{(n_1, n_2): s = n_1 \cup n_2}|$ \\
+%
+%The feature map defined by this kernel associates each $S_i$ a vector of dimension $|V|^n$ containing the historgram of frequencies of all its substrings of length n (n-grams).
 }
     
     \item[(b)] [3 points] In reality, the vocabulary size is usually large. For example {\it WikiText-103}, which contains all articles extracted from Wikipedia, has a vocabulary size of 217,646. However, the frequency of words has a long tail distribution and some of the words rarely appear. We can replace those rare words with a designated ``unknown token'' UNK to effectively reduce the vocabulary size. For example, if we restrict the vocabulary to $V'$ which only the has three tokens $\{ \text{I}, \text{saw}, \text{UNK}\}$, our previous example becomes: $S'_i = [\text{I, saw, UNK, saw, UNK, saw, UNK, saw}]$, and
@@ -249,9 +294,12 @@ The feature map defined by this kernel associates each $S_i$ a vector of dimensi
     Is this still a valid kernel? If yes, express the kernel function using an appropriate feature mapping $\phi'(S_i)$ and state its relation with $\phi(S_i)$. If not, please give a counterexample.
     
     \answer{}{
-This should still be a valid kernel mapping as nothing has fundamentally changed. All the rare words are mapped to the "unknown token" UNK for all string. In a way, the feature map here seems to combine 2 feature mapping, first map to UNK tokens, and then second part is the same as the part above.\\
+%This should still be a valid kernel mapping as nothing has fundamentally changed. All the rare words are mapped to the "unknown token" UNK for all string. In a way, the feature map here seems to combine 2 feature mapping, first map to UNK tokens, and then second part is the same as the part above.\\
+%
+%The feature map is updated to be:  $\phi'(S_i) =  |{(n_1, n_2): s = n_1 \cup n_2}|$ \\
+This is still a valid kernel.
 
-The feature map is updated to be:  $\phi'(S_i) =  |{(n_1, n_2): s = n_1 \cup n_2}|$ \\
+
     }
     
     \clearpage  
