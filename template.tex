@@ -169,7 +169,7 @@ Which component can be reduced by decreasing the dimension of parameter $\theta$
 \item \textbf{Short Answer}. 
 How many parameters are necessary to specify a \emph{Bernoulli Event Model} Naive Bayes classifier with $c$ classes and vocabulary size $v$? Express your answer in terms of $c$ and $v$.
 
-\answer{}{We would need $v\times c$ parameters in total.}
+\answer{}{We would need $v\times c$ parameters in total to represent the probabilty for $c$ classes for each of words in vocabulary $v$.}
 
 \item \textbf{Short Answer}.
 Suppose we train a neural network to classify 16 x 16 pixel images into 4 classes. We flatten each image into a vector, and feed the images into a 3-layer neural net with 10 neurons in the first hidden layer, 6 neurons in the second hidden layer, and apply softmax loss at the output layer. How many parameters does this model have? (Don't forget to include biases!)
@@ -266,6 +266,9 @@ $$
 $$
 
 The feature mapping d will has dimension of $(V^n, 1)$ where V is the number of words in dictionary and n is from n-grams. 
+
+From this feature map, we basically have a vector containing 1 or 0, indicating whether the n-gram at the index is present in $S_1$. The same would be done for another $S_2$. If we take the dot product between these two feature maps, the only time where a value of dot product is 1 would be if both $S_1$ and $S_2$ has the n-grams at the current index, making the value in the fearure map vector to be 1 for each. If the n-grams is missing on both string, or present on only 1, then we'll always have 0. This aligns with the current kernel method that only increment by 1 if an n-gram is present on both string.
+
 %
 %$$
 %    K_{V,n}(S_1, S_2) = \sum_{x\in g_n(S_1)} \sum_{z\in g_n(S_2)} 1\{x=z\} \; 1\{z=x\} 
@@ -335,14 +338,14 @@ On a related note, back in PSET2 Q3, we have discussed constructing Kernels. The
     $$
    Test with a couple of string:\\
    
- $S_2$= (that saw) will give us $K_{V, 2}(S_1, S_2) = K_{V', 2}(S_1, S_2) = 1$\\
- $S_2$= (an apple) will give us $K_{V, 2}(S_1, S_2) = K_{V', 2}(S_1, S_2) = 1$\\
- $S_2$= (an apple, an orange) will give us $K_{V, 2}(S_1, S_2) = K_{V',2}(S_1, S_2) = 1$ since both (an apple, an orange) are mapped to a singular (UNK UNK) and will only be counted once. \\
- $S_2$= (an apple, that saw) will give us $K_{V,2n}(S_1, S_2) = K_{V', 2}(S_1, S_2) = 2$ since (an apple, that saw) are mapped to (UNK UNK, UNK saw), which are both counted.\\
+ $S_2$= "that saw" will give us $K_{V, 2}(S_1, S_2) = K_{V', 2}(S_1, S_2) = 1$\\
+ $S_2$= "an apple" will give us $K_{V, 2}(S_1, S_2) = K_{V', 2}(S_1, S_2) = 1$\\
+ $S_2$= "an apple an orange" will give us $K_{V, 2}(S_1, S_2) = K_{V',2}(S_1, S_2) = 1$ since both (an apple, an orange) are mapped to a singular (UNK UNK) and will only be counted once for $V'$. For $V$, (an apple) is counted.. \\
+ $S_2$= "an apple that saw" will give us $K_{V,2n}(S_1, S_2) = K_{V', 2}(S_1, S_2) = 2$ since (an apple, apple that, that saw) are mapped to (UNK UNK, UNK saw), which are both counted in $V'$. For $V$, (an apple, that saw) is also counted.\\
 However, \\
-$S_2$= (an apple, that that) will give us $K_{V, 2}(S_1, S_2) =2 > K_{V', 2}(S_1, S_2) = 1$. For $V'$, (an apple, that that) is mapped to (UNK UNK), and is counted once as common string. For $V$, we count both "an apple" and "that that", giving us 2.\\
+$S_2$= "an apple that that" will give us $K_{V, 2}(S_1, S_2) =2 > K_{V', 2}(S_1, S_2) = 1$. For $V'$, (an apple, apple that, that that) is mapped to (UNK UNK), and is counted once as common string using $V'$. For $V$, we count both "an apple" and "that that", giving us 2.\\
 This can be thought of as a consequence of many to one mapping in $V'$. As to whether $K_{V, n}(S_1, S_2) < K_{V', n}(S_1, S_2)$ is possible, we look at the following example:\\
- $S_2$= (an orange) will give us $K_{V,2n}(S_1, S_2) = 0 < K_{V', 2}(S_1, S_2) = 1$ since (an orange) is mapped to (UNK UNK), which is counted for $V'$. $V$ maintains the original string, which then means it isn't counted for any common string here.
+ $S_2$= "an orange" will give us $K_{V,2n}(S_1, S_2) = 0 < K_{V', 2}(S_1, S_2) = 1$ since (an orange) is mapped to (UNK UNK), which is counted for $V'$. $V$ maintains the original string, which then means it isn't counted for any common string here.
 
 Therefore, answer is E here.
 
