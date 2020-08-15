@@ -520,7 +520,7 @@ $$
 = 
 \frac{\partial \ell}{\partial h^{[2]}(x_1)} 
 \frac{\partial}{\partial a^{[1]}(x_1)} (W^{[2]}a^{[1]}(x_1) + b^{[2]})
-\frac{\partial}{\partial h^{[1]}(x_1)} sigmoid(h^{[1]}(x_1))
+\frac{\partial}{\partial h^{[1]}(x_1)} \sigma(h^{[1]}(x_1))
 $$
 $$
 = 
@@ -569,7 +569,7 @@ $$
 \frac{\partial a^{[1]}(x_1)}{\partial h^{[1]}(x_1)} 
 \frac{\partial h^{[1]}(x_1)}{\partial W^{[1]}} \\
 \frac{\partial \ell}{\partial h^{[2]}(x_2)} 
-\frac{\partial h^{[2]}(x_1)}{\partial a^{[1]}(x_2)}
+\frac{\partial h^{[2]}(x_2)}{\partial a^{[1]}(x_2)}
 \frac{\partial a^{[1]}(x_2)}{\partial h^{[1]}(x_2)} 
 \frac{\partial h^{[1]}(x_2)}{\partial W^{[1]}} \\
 \end{bmatrix} \;
@@ -600,7 +600,7 @@ $$
 \frac{\partial a^{[1]}(x_1)}{\partial h^{[1]}(x_1)} 
 \frac{\partial h^{[1]}(x_1)}{\partial b^{[1]}} \\
 \frac{\partial \ell}{\partial h^{[2]}(x_2)} 
-\frac{\partial h^{[2]}(x_1)}{\partial a^{[1]}(x_2)}
+\frac{\partial h^{[2]}(x_2)}{\partial a^{[1]}(x_2)}
 \frac{\partial a^{[1]}(x_2)}{\partial h^{[1]}(x_2)} 
 \frac{\partial h^{[1]}(x_2)}{\partial b^{[1]}} \\
 \end{bmatrix} \;
